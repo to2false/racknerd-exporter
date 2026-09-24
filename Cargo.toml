@@ -1,0 +1,23 @@
+[package]
+name = "racknerd-exporter"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.88"
+description = "Read-only RackNerd / SolusVM client API exporter for Prometheus"
+license = "MIT"
+repository = "https://github.com/to2false/racknerd-exporter"
+
+[dependencies]
+axum = "0.8.9"
+quick-xml = { version = "0.42", features = ["serialize"] }
+reqwest = { version = "0.13.5", default-features = false, features = ["rustls", "form"] }
+serde = { version = "1", features = ["derive"] }
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "net", "signal", "sync", "time"] }
+
+[dev-dependencies]
+serde_urlencoded = "0.7"
+tower = { version = "0.5", features = ["util"] }
+
+[profile.release]
+lto = "thin"
+strip = true

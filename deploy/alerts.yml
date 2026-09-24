@@ -1,0 +1,38 @@
+groups:
+  - name: racknerd
+    rules:
+      - alert: RackNerdExporterUnavailable
+        expr: up{job="racknerd"} == 0
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Prometheus cannot scrape RackNerd exporter {{ $labels.instance }}"
+      - alert: RackNerdApiUnavailable
+        expr: racknerd_up == 0
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RackNerd API collection failed for {{ $labels.server }}"
+      - alert: RackNerdVpsOffline
+        expr: (racknerd_vps_online == 0) and on(job, instance, server) (racknerd_up == 1)
+        for: 5m
+        labels:
+          severity: critical
+        annotations:
+          summary: "RackNerd VPS {{ $labels.server }} is offline or disabled"
+      - alert: RackNerdBandwidthHigh
+        expr: racknerd_bandwidth_used_ratio > 0.8
+        for: 15m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RackNerd VPS {{ $labels.server }} has used over 80% of its bandwidth quota"
+      - alert: RackNerdStateUnknown
+        expr: racknerd_vps_state_known == 0
+        for: 10m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RackNerd API returned no recognized power state for {{ $labels.server }}"

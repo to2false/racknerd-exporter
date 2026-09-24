@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ctrl>
+  <status>success</status>
+  <vmstat>online</vmstat>
+  <bw>1073741824000,268435456000,805306368000,25</bw>
+  <hdd>21474836480,5368709120,16106127360,25</hdd>
+  <mem>1073741824,268435456,805306368,25</mem>
+</ctrl>

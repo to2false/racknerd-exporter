@@ -1,0 +1,28 @@
+name: racknerd-monitoring
+services:
+  exporter:
+    build: .
+    image: ${EXPORTER_IMAGE:-ghcr.io/to2false/racknerd-exporter:latest}
+    restart: unless-stopped
+    environment:
+      RACKNERD_API_URL: ${RACKNERD_API_URL:-https://ctrl.racknerd.com/api/client/command.php}
+      RACKNERD_API_KEY: ${RACKNERD_API_KEY:?Set RACKNERD_API_KEY in .env}
+      RACKNERD_API_HASH: ${RACKNERD_API_HASH:?Set RACKNERD_API_HASH in .env}
+      RACKNERD_SERVER: ${RACKNERD_SERVER:-racknerd}
+      RACKNERD_LISTEN_ADDRESS: 0.0.0.0:9725
+      RACKNERD_TIMEOUT_SECONDS: ${RACKNERD_TIMEOUT_SECONDS:-10}
+      RACKNERD_CACHE_SECONDS: ${RACKNERD_CACHE_SECONDS:-3600}
+      RACKNERD_COLLECT_MEMORY_DISK: ${RACKNERD_COLLECT_MEMORY_DISK:-false}
+    ports:
+      - "127.0.0.1:${EXPORTER_PORT:-9725}:9725"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    networks:
+      monitoring:
+        aliases: [racknerd-exporter]
+
+networks:
+  monitoring:
+    external: true
+    name: ${MONITORING_NETWORK:-lan}

@@ -1,0 +1,10 @@
+apiVersion: 1
+providers:
+  - name: RackNerd
+    orgId: 1
+    folder: RackNerd
+    type: file
+    disableDeletion: true
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards
